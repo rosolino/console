@@ -143,6 +143,8 @@ using namespace std;
 using namespace boost::multi_index;
 #pragma warning(pop)
 
+#include <WinInet.h>
+
 #include "../shared/SharedMemory.h"
 #include "../shared/Structures.h"
 
@@ -150,6 +152,7 @@ using namespace boost::multi_index;
 #include "../shared/Cpp11Helpers.h"
 #include "../shared/NamedPipe.h"
 #include "Helpers.h"
+#include "XmlHelper.h"
 #include "ImageHandler.h"
 #include "SettingsHandler.h"
 #include "ConsoleHandler.h"

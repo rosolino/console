@@ -11,23 +11,52 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-HRESULT XmlHelper::OpenXmlDocument(const wstring& strFilename, CComPtr<IXMLDOMDocument>& pXmlDocument, CComPtr<IXMLDOMElement>& pRootElement)
+HRESULT XmlHelper::OpenXmlDocument(const std::wstring& strFilename, CComPtr<IXMLDOMDocument>& pXmlDocument, CComPtr<IXMLDOMElement>& pRootElement, std::wstring& strParseError)
 {
 	VARIANT_BOOL bLoadSuccess	= 0; // FALSE
 
 	pXmlDocument.Release();
 	pRootElement.Release();
-	
+
 	HRESULT hr = pXmlDocument.CoCreateInstance(__uuidof(DOMDocument));
-	if (FAILED(hr) || (pXmlDocument.p == NULL)) return E_FAIL;
+	if( pXmlDocument.p == nullptr ) return E_FAIL;
+	if (FAILED(hr)) return hr;
 
 	hr = pXmlDocument->load(CComVariant(strFilename.c_str()), &bLoadSuccess);
-	if (FAILED(hr) || (!bLoadSuccess)) return E_FAIL;
+	if (FAILED(hr)) return hr;
+	if( bLoadSuccess == VARIANT_FALSE )
+	{
+		CComPtr<IXMLDOMParseError> pParseError;
+		hr = pXmlDocument->get_parseError(&pParseError);
+		if (FAILED(hr)) return hr;
+
+		long errorCode;
+		hr = pParseError->get_errorCode(&errorCode);
+		if (FAILED(hr)) return hr;
+
+		// file not found
+		if( errorCode == INET_E_RESOURCE_NOT_FOUND ) return E_FAIL;
+
+		long line;
+		hr = pParseError->get_line(&line);
+		if (FAILED(hr)) return hr;
+
+		long linepos;
+		hr = pParseError->get_linepos(&linepos);
+		if (FAILED(hr)) return hr;
+
+		CComBSTR reason;
+		hr = pParseError->get_reason(&reason);
+		if (FAILED(hr)) return hr;
+
+		strParseError = boost::str(boost::wformat(Helpers::LoadStringW(IDS_ERR_XML_PARSING)) % errorCode % strFilename % line % linepos % reason.m_str);
+
+		return S_FALSE;
+	}
 
 	hr = pXmlDocument->get_documentElement(&pRootElement);
-	if (FAILED(hr)) return E_FAIL;
 
-	return S_OK;
+	return hr;
 }
 
 HRESULT XmlHelper::OpenXmlDocumentFromResource(const wstring& strFilename, CComPtr<IXMLDOMDocument>& pXmlDocument, CComPtr<IXMLDOMElement>& pRootElement)
@@ -63,6 +92,65 @@ HRESULT XmlHelper::OpenXmlDocumentFromResource(const wstring& strFilename, CComP
 	}
 
 	return E_FAIL;
+}
+
+HRESULT XmlHelper::OpenXmlDocumentFromContent(const std::vector<char>& content, CComPtr<IXMLDOMDocument>& pXmlDocument, CComPtr<IXMLDOMElement>& pRootElement)
+{
+	VARIANT_BOOL bLoadSuccess = 0; // FALSE
+
+	pXmlDocument.Release();
+	pRootElement.Release();
+
+	HRESULT hr = pXmlDocument.CoCreateInstance(__uuidof(DOMDocument));
+	if( pXmlDocument.p == nullptr ) return E_FAIL;
+	if (FAILED(hr)) return hr;
+
+  int rc = ::MultiByteToWideChar(CP_UTF8,
+                                 0,
+                                 &content[0], static_cast<int>(content.size()),
+                                 nullptr, 0);
+
+  if( rc == 0 ) return E_FAIL;
+
+  CComBSTR xml(rc);
+
+  rc = ::MultiByteToWideChar(CP_UTF8,
+                             0,
+                             &content[0], static_cast<int>(content.size()),
+                             xml.m_str, rc + 1);
+
+  if( rc == 0 ) return E_FAIL;
+
+	hr = pXmlDocument->loadXML(CComBSTR(xml), &bLoadSuccess);
+	if (FAILED(hr)) return hr;
+	if( bLoadSuccess == VARIANT_FALSE )
+	{
+		CComPtr<IXMLDOMParseError> pParseError;
+		hr = pXmlDocument->get_parseError(&pParseError);
+		if (FAILED(hr)) return hr;
+
+		long errorCode;
+		hr = pParseError->get_errorCode(&errorCode);
+		if (FAILED(hr)) return hr;
+
+		long line;
+		hr = pParseError->get_line(&line);
+		if (FAILED(hr)) return hr;
+
+		long linepos;
+		hr = pParseError->get_linepos(&linepos);
+		if (FAILED(hr)) return hr;
+
+		CComBSTR reason;
+		hr = pParseError->get_reason(&reason);
+		if (FAILED(hr)) return hr;
+
+		return E_FAIL;
+	}
+
+	hr = pXmlDocument->get_documentElement(&pRootElement);
+
+	return hr;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -101,6 +189,20 @@ HRESULT XmlHelper::CreateDomElement(const CComPtr<IXMLDOMElement>& pElement, con
   hr = pXmlDocument->createElement(bstrName, &pNewElement2);
   if( hr != S_OK )
     return hr;
+
+	// indent
+	CComBSTR indent(L"\n");
+	CComPtr<IXMLDOMNode> pParentNode;
+	hr = pElement->get_parentNode(&pParentNode);
+	while( hr == S_OK )
+	{
+		indent += L"\t";
+		CComPtr<IXMLDOMNode> pParentNode2;
+		hr = pParentNode->get_parentNode(&pParentNode2);
+		if( hr == S_OK ) pParentNode = pParentNode2;
+	}
+	XmlHelper::AddTextNode(pElement, indent);
+
   hr = pElement->appendChild(pNewElement2, &pNode);
   if( hr != S_OK )
     return hr;
@@ -113,7 +215,7 @@ HRESULT XmlHelper::CreateDomElement(const CComPtr<IXMLDOMElement>& pElement, con
 
 //////////////////////////////////////////////////////////////////////////////
 
-HRESULT XmlHelper::AddTextNode(CComPtr<IXMLDOMElement>& pElement, const CComBSTR& bstrText)
+HRESULT XmlHelper::AddTextNode(const CComPtr<IXMLDOMElement>& pElement, const CComBSTR& bstrText)
 {
   HRESULT hr;
   CComPtr<IXMLDOMNode>     pNode;
@@ -129,6 +231,37 @@ HRESULT XmlHelper::AddTextNode(CComPtr<IXMLDOMElement>& pElement, const CComBSTR
   hr = pElement->appendChild(pXmlDomText, &pNode);
 
   return hr;
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
+
+//////////////////////////////////////////////////////////////////////////////
+
+HRESULT XmlHelper::RemoveAllChildNodes(const CComPtr<IXMLDOMElement>& pElement)
+{
+	HRESULT hr;
+
+	CComPtr<IXMLDOMNodeList> pChildNodes;
+	hr = pElement->get_childNodes(&pChildNodes);
+	if (FAILED(hr)) return hr;
+
+	long lListLength;
+	hr = pChildNodes->get_length(&lListLength);
+	if (FAILED(hr)) return hr;
+
+	for (long i = lListLength - 1; i >= 0; --i)
+	{
+		CComPtr<IXMLDOMNode> pChildNode;
+		hr = pChildNodes->get_item(i, &pChildNode);
+		if (FAILED(hr)) return hr;
+
+		CComPtr<IXMLDOMNode> pRemovedNode;
+		hr = pElement->removeChild(pChildNode, &pRemovedNode);
+		if (FAILED(hr)) return hr;
+	}
+
+	return hr;
 }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -400,7 +533,7 @@ bool XmlHelper::LoadColors(const CComPtr<IXMLDOMElement>& pElement, COLORREF col
 
 void XmlHelper::SaveColors(CComPtr<IXMLDOMElement>& pElement, const COLORREF colors[16], BYTE opacity)
 {
-	CComPtr<IXMLDOMElement>	pFontColorsElement;
+	CComPtr<IXMLDOMElement> pFontColorsElement;
 
 	if (FAILED(XmlHelper::AddDomElementIfNotExist(pElement, CComBSTR(L"colors"), pFontColorsElement))) return;
 
@@ -408,15 +541,17 @@ void XmlHelper::SaveColors(CComPtr<IXMLDOMElement>& pElement, const COLORREF col
 
 	for (DWORD i = 0; i < 16; ++i)
 	{
-		CComPtr<IXMLDOMElement>	pFontColorElement;
+		CComPtr<IXMLDOMElement> pFontColorElement;
 
 		if (FAILED(XmlHelper::GetDomElement(pFontColorsElement, CComBSTR(str(boost::wformat(L"color[@id='%1%']") % i).c_str()), pFontColorElement)))
 		{
-			XmlHelper::AddTextNode(pFontColorsElement, CComBSTR(L"\n\t\t\t\t"));
 			if (FAILED(XmlHelper::CreateDomElement(pFontColorsElement, CComBSTR(L"color"), pFontColorElement))) continue;
-			if( i == 15 )
-				XmlHelper::AddTextNode(pFontColorsElement, CComBSTR(L"\n\t\t\t"));
+
 			SetAttribute(pFontColorElement, CComBSTR(L"id"), i);
+
+			// this is just for pretty printing
+			if( i == 15 )
+				XmlHelper::AddTextNode(pFontColorsElement, CComBSTR(L"\n\t\t"));
 		}
 
 		SetRGBAttribute(pFontColorElement, colors[i]);

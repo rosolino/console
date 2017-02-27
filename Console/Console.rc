@@ -69,10 +69,10 @@ CAPTION "About"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,130,130,50,14
+    PUSHBUTTON      "website",IDC_BTN_HOME_PAGE,130,110,50,14
 #ifndef _USE_AERO
-    CTEXT           "\nConsoleZ",IDC_STATIC_VERSION,25,41,78,25
+    CTEXT           "",IDC_STATIC_VERSION,15,41,100,96
     ICON            IDR_MAINFRAME,IDC_APPICON,55,26,20,20
-    CTEXT           "\nCopyright (C) 2011-2016\nChristophe Bucher\n\na modified version of\nConsole 2\nfrom\nMarko Bozikovic",IDC_APPTEXT,14,64,103,70,,WS_EX_TRANSPARENT
 #endif
     GROUPBOX        "",IDC_STATIC,7,7,115,137
 END
@@ -439,8 +439,9 @@ EXSTYLE WS_EX_TRANSPARENT
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Solid",IDC_RADIO_BK_TYPE,"Button",BS_AUTORADIOBUTTON | BS_MULTILINE | WS_GROUP,5,3,215,16
-    CONTROL         "Image",IDC_RADIO_BK_TYPE2,"Button",BS_AUTORADIOBUTTON | BS_MULTILINE,5,35,215,16
+    CONTROL         "Image",IDC_RADIO_BK_TYPE2,"Button",BS_AUTORADIOBUTTON | BS_MULTILINE,5,35,105,16
     CONTROL         "Wallpaper",IDC_RADIO_BK_TYPE3,"Button",BS_AUTORADIOBUTTON | BS_MULTILINE,5,99,215,16
+    CONTROL         "Bing", IDC_RADIO_BK_TYPE4, "Button", BS_AUTORADIOBUTTON | BS_MULTILINE, 115, 35, 105, 16
     RTEXT           "Col&or:",IDC_STATIC_BK_COLOR,17,23,41,8
     CONTROL         "",IDC_BK_COLOR,"Static",SS_BLACKFRAME | SS_NOTIFY,60,20,16,14,WS_EX_DLGMODALFRAME
     RTEXT           "File:",IDC_STATIC_BK_IMAGE,17,55,41,8,NOT WS_GROUP
@@ -578,6 +579,18 @@ IDR_TOOLBAR_24 TOOLBAR 24, 24
 IDR_TOOLBAR_32 TOOLBAR 32, 32
 #include "res/Toolbar.rc2"
 
+IDR_TOOLBAR_40 TOOLBAR 40, 40
+#include "res/Toolbar.rc2"
+
+IDR_TOOLBAR_48 TOOLBAR 48, 48
+#include "res/Toolbar.rc2"
+
+IDR_TOOLBAR_64 TOOLBAR 64, 64
+#include "res/Toolbar.rc2"
+
+IDR_TOOLBAR_80 TOOLBAR 80, 80
+#include "res/Toolbar.rc2"
+
 IDR_SEARCH_16 TOOLBAR 16, 16
 #include "res/SearchBar.rc2"
 
@@ -588,6 +601,18 @@ IDR_SEARCH_24 TOOLBAR 24, 24
 #include "res/SearchBar.rc2"
 
 IDR_SEARCH_32 TOOLBAR 32, 32
+#include "res/SearchBar.rc2"
+
+IDR_SEARCH_40 TOOLBAR 40, 40
+#include "res/SearchBar.rc2"
+
+IDR_SEARCH_48 TOOLBAR 48, 48
+#include "res/SearchBar.rc2"
+
+IDR_SEARCH_64 TOOLBAR 64, 64
+#include "res/SearchBar.rc2"
+
+IDR_SEARCH_80 TOOLBAR 80, 80
 #include "res/SearchBar.rc2"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -615,6 +640,25 @@ IDR_FULLSCREEN1_32      BITMAP                  "res\\fullscreen1_32.bmp"
 IDR_FULLSCREEN2_32      BITMAP                  "res\\fullscreen2_32.bmp"
 IDR_SEARCH_32           BITMAP                  "res\\search_32.bmp"
 
+IDR_TOOLBAR_40          BITMAP                  "res\\toolbar_40.bmp"
+IDR_FULLSCREEN1_40      BITMAP                  "res\\fullscreen1_40.bmp"
+IDR_FULLSCREEN2_40      BITMAP                  "res\\fullscreen2_40.bmp"
+IDR_SEARCH_40           BITMAP                  "res\\search_40.bmp"
+
+IDR_TOOLBAR_48          BITMAP                  "res\\toolbar_48.bmp"
+IDR_FULLSCREEN1_48      BITMAP                  "res\\fullscreen1_48.bmp"
+IDR_FULLSCREEN2_48      BITMAP                  "res\\fullscreen2_48.bmp"
+IDR_SEARCH_48           BITMAP                  "res\\search_48.bmp"
+
+IDR_TOOLBAR_64          BITMAP                  "res\\toolbar_64.bmp"
+IDR_FULLSCREEN1_64      BITMAP                  "res\\fullscreen1_64.bmp"
+IDR_FULLSCREEN2_64      BITMAP                  "res\\fullscreen2_64.bmp"
+IDR_SEARCH_64           BITMAP                  "res\\search_64.bmp"
+
+IDR_TOOLBAR_80          BITMAP                  "res\\toolbar_80.bmp"
+IDR_FULLSCREEN1_80      BITMAP                  "res\\fullscreen1_80.bmp"
+IDR_FULLSCREEN2_80      BITMAP                  "res\\fullscreen2_80.bmp"
+IDR_SEARCH_80           BITMAP                  "res\\search_80.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -673,6 +717,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Full Screen",                ID_VIEW_FULLSCREEN
         MENUITEM "Switch On/Off Transparency",  ID_SWITCH_TRANSPARENCY
+        MENUITEM "Always On Top",               ID_VIEW_ALWAYS_ON_TOP
     END
     POPUP "Help"
     BEGIN
@@ -842,6 +887,7 @@ BEGIN
 
     ID_CLONE_IN_NEW_TAB     "Clone the current view in a new tab\nClone in New Tab"
     ID_VIEW_FULLSCREEN      "Toggle full screen\nFull Screen"
+    ID_VIEW_ALWAYS_ON_TOP   "Toggle window always on top\nAlways On Top"
     ID_GROUP_ALL            "Group all terminals so that any input sent to one of them, goes to all of them\nGroup All"
     ID_UNGROUP_ALL          "Remove grouping from all terminals\nUngroup All"
     ID_GROUP_TAB            "Group all terminals in the current tab so that any input sent to one of them, goes to all of them\nGroup Tab"
@@ -890,6 +936,7 @@ BEGIN
     IDS_ERR_TAB_CREATE_FAILED "Failed to open %1% tab!\nThe process %2% could still be running (use the Task Manager to find it and end it)"
     IDS_ERR_IS_NOT_A_WIN32_CONSOLE "%1% is not a Win32 console application!"
     IDS_ERR_CANT_GET_USER "Unable to get current user identity (reason: %1%)!"
+    IDS_ERR_XML_PARSING "XML parsing error (%1$#x) in file %2% on line %3% at column %4%: %5%"
 END
 
 STRINGTABLE
@@ -940,7 +987,7 @@ BEGIN
 
     MSG_TABVIEW_RUNAS       "Run as different user"
 
-    MSG_ABOUT               "\nConsoleZ %1%.%2%.%3%.%4%\nCopyright (c)\n2011-2016\nChristophe Bucher\n\na modified version of\nConsole 2 from\nMarko Bozikovic"
+    MSG_ABOUT               "\nConsoleZ %1%\n\nCopyright (c) 2011-2016\nChristophe Bucher\n\na modified version of\nConsole 2 from\nMarko Bozikovic"
 END
 
 STRINGTABLE
@@ -1002,6 +1049,7 @@ BEGIN
     IDS_SPLIT_SWAP           "Swap with the view that previously had focus"
     IDS_CLONE_IN_NEW_TAB     "Clone view in new tab"
     IDS_VIEW_FULLSCREEN      "Full Screen"
+    IDS_VIEW_ALWAYS_ON_TOP   "Always on top"
     IDS_VIEW_ZOOM_100        "Zoom 100%"
     IDS_VIEW_ZOOM_INC        "Zoom increment"
     IDS_VIEW_ZOOM_DEC        "Zoom decrement"

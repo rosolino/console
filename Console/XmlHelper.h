@@ -15,14 +15,16 @@
 class XmlHelper
 {
 	public:
-		
-		static HRESULT OpenXmlDocument(const wstring& strFilename, CComPtr<IXMLDOMDocument>& pXmlDocument, CComPtr<IXMLDOMElement>& pRootElement);
+
+		static HRESULT OpenXmlDocument(const std::wstring& strFilename, CComPtr<IXMLDOMDocument>& pXmlDocument, CComPtr<IXMLDOMElement>& pRootElement, std::wstring& strParseError);
 		static HRESULT OpenXmlDocumentFromResource(const wstring& strFilename, CComPtr<IXMLDOMDocument>& pXmlDocument, CComPtr<IXMLDOMElement>& pRootElement);
+		static HRESULT OpenXmlDocumentFromContent(const std::vector<char>& content, CComPtr<IXMLDOMDocument>& pXmlDocument, CComPtr<IXMLDOMElement>& pRootElement);
 
 		static HRESULT GetDomElement(const CComPtr<IXMLDOMElement>& pRootElement, const CComBSTR& bstrPath, CComPtr<IXMLDOMElement>& pElement);
 		static HRESULT AddDomElementIfNotExist(const CComPtr<IXMLDOMElement>& pElement, const CComBSTR& bstrName, CComPtr<IXMLDOMElement>& pNewElement);
 		static HRESULT CreateDomElement(const CComPtr<IXMLDOMElement>& pElement, const CComBSTR& bstrName, CComPtr<IXMLDOMElement>& pNewElement);
-		static HRESULT AddTextNode(CComPtr<IXMLDOMElement>& pElement, const CComBSTR& bstrText);
+		static HRESULT AddTextNode(const CComPtr<IXMLDOMElement>& pElement, const CComBSTR& bstrText);
+		static HRESULT RemoveAllChildNodes(const CComPtr<IXMLDOMElement>& pElement);
 
 		static void GetAttribute(const CComPtr<IXMLDOMElement>& pElement, const CComBSTR& bstrName, DWORD& dwValue, DWORD dwDefaultValue);
 		static void GetAttribute(const CComPtr<IXMLDOMElement>& pElement, const CComBSTR& bstrName, int& nValue, int nDefaultValue);

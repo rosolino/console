@@ -38,14 +38,26 @@ Changelog
     + added
     * fixed
 
-Changes in 1.17.0 (29 apr 2016)
+Changes in 1.17.1-beta (02 Sep 2016)
+
+    ! Handle XML parsing errors (configuration file and snippets).
+    + "Toggle always on top" hotkey command.
+    + New high dpi icons (250%, 300%, 400% and 500%).
+    + Bing image of the day as background.
+    * ConsoleZ no longer closes without explanation on bad config.
+    * Start a safe console when no console started.
+    * Fix scroll bars position in hidden tabs.
+    * System environment variables no longer override local environment variables.
+    * Japanese localization (thanks to ys-nuem).
+
+Changes in 1.17.0 (08 may 2016)
 
     ! Rebuild FreeImage 3.17.0 (static link without OpenMP)
-    - ConsoleZ sets the current Windows console font to "Lucidia Console" size 5.
+    - ConsoleZ no longer sets the current Windows console font to "Lucidia Console" size 5.
       (DBCS code page requires a specific font)
     + Snippets manager.
     + "Resume scrolling" command.
-    + Configure initial window state (appearence settings).
+    + Configure initial window state (appearance settings).
     + Japanese localization (thanks to rosolino).
     * Mono-instance is no longer forced in jump lists.
     * User profile is fully created when running a shell with another user credentials.

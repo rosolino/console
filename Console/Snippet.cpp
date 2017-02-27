@@ -87,10 +87,18 @@ bool SnippetCollection::loadSnippets(const std::wstring& fullSnippetsFileName)
 	// load the xml file
 	CComPtr<IXMLDOMDocument> xmlDocumentSnippets;
 	CComPtr<IXMLDOMElement>  xmlElementSnippets;
-	if( FAILED(XmlHelper::OpenXmlDocument(
+	std::wstring strParseError;
+	HRESULT hr = XmlHelper::OpenXmlDocument(
 		fullSnippetsFileName,
 		xmlDocumentSnippets,
-		xmlElementSnippets)) ) return false;
+		xmlElementSnippets,
+		strParseError);
+	if( FAILED(hr) ) return false;
+	if( hr == S_FALSE )
+	{
+		::MessageBox(NULL, strParseError.c_str(), Helpers::LoadString(IDS_CAPTION_ERROR).c_str(), MB_ICONERROR | MB_OK);
+		return false;
+	}
 
 	std::shared_ptr<SnippetsFile> snippetsFile(new SnippetsFile(fullSnippetsFileName));
 	if( !snippetsFile->load(xmlElementSnippets) ) return false;
@@ -129,10 +137,12 @@ bool SnippetCollection::load(const std::wstring& folder)
 {
 	try
 	{
+		std::wstring folderex = Helpers::ExpandEnvironmentStrings(folder);
+
 		// parse all files with extension xml
 		WIN32_FIND_DATA findData;
 
-		std::unique_ptr<void, FindCloseHelper> hFind(::FindFirstFile((folder + L"\\*.xml").c_str(), &findData));
+		std::unique_ptr<void, FindCloseHelper> hFind(::FindFirstFile((folderex + L"\\*.xml").c_str(), &findData));
 		if( hFind.get() == INVALID_HANDLE_VALUE )
 		{
 			// If the function fails because no matching files can be found,
@@ -150,7 +160,7 @@ bool SnippetCollection::load(const std::wstring& folder)
 
 			std::wstring fileName = findData.cFileName;
 
-			loadSnippets(folder + std::wstring(L"\\") + fileName);
+			loadSnippets(folderex + std::wstring(L"\\") + fileName);
 		}
 		while( ::FindNextFile(hFind.get(), &findData) );
 

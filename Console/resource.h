@@ -54,6 +54,26 @@
 #define IDR_FULLSCREEN2_32              332
 #define IDR_SEARCH_32                   333
 
+#define IDR_TOOLBAR_40                  340
+#define IDR_FULLSCREEN1_40              341
+#define IDR_FULLSCREEN2_40              342
+#define IDR_SEARCH_40                   343
+
+#define IDR_TOOLBAR_48                  350
+#define IDR_FULLSCREEN1_48              351
+#define IDR_FULLSCREEN2_48              352
+#define IDR_SEARCH_48                   353
+
+#define IDR_TOOLBAR_64                  360
+#define IDR_FULLSCREEN1_64              361
+#define IDR_FULLSCREEN2_64              362
+#define IDR_SEARCH_64                   363
+
+#define IDR_TOOLBAR_80                  370
+#define IDR_FULLSCREEN1_80              371
+#define IDR_FULLSCREEN2_80              372
+#define IDR_SEARCH_80                   373
+
 #define IDC_TAB_NAME                    1000
 #define IDC_APPLY                       1001
 #define IDC_TREE_SECTIONS               1002
@@ -178,10 +198,7 @@
 #define IDC_TAB_INIT_DIR                1120
 #define IDC_COMBO_CURSOR                1121
 #define IDC_CURSOR_COLOR                1122
-#define IDC_RADIO_BK_TYPE               1123
 #define IDC_CURSOR_ANIM                 1123
-#define IDC_RADIO_BK_TYPE2              1124
-#define IDC_RADIO_BK_TYPE3              1125
 #define IDC_BK_COLOR                    1126
 #define IDC_BK_IMAGE                    1127
 #define IDC_CHECK_BK_RELATIVE           1128
@@ -246,7 +263,6 @@
 #define IDC_PASSWORD                    1176
 #define IDC_STATIC_TRIM_CHARS_RIGHT     1176
 #define IDC_CHECK_RUN_AS_USER           1177
-#define IDC_APPTEXT                     1177
 #define IDC_STATIC_USER                 1177
 #define IDC_APPICON                     1178
 #define IDC_STATIC_PASSWORD             1178
@@ -314,6 +330,11 @@
 #define IDC_CHECK_STATE                 1240
 #define IDC_COMBO_STATE                 1241
 #define IDC_CHECK_SAVE_STATE            1242
+#define IDC_BTN_HOME_PAGE               1243
+#define IDC_RADIO_BK_TYPE               1244
+#define IDC_RADIO_BK_TYPE2              1245
+#define IDC_RADIO_BK_TYPE3              1246
+#define IDC_RADIO_BK_TYPE4              1247
 
 #define ID_SNIPPET_ID_FIRST             1900
 #define ID_SNIPPET_ID_LAST              1999
@@ -393,6 +414,7 @@
 #define IDS_ERR_TAB_CREATE_FAILED       5007
 #define IDS_ERR_IS_NOT_A_WIN32_CONSOLE  5008
 #define IDS_ERR_CANT_GET_USER           5009
+#define IDS_ERR_XML_PARSING             5010
 
 #define IDS_EDIT_SETTINGS               6000
 #define IDS_HELP                        6001
@@ -486,6 +508,7 @@
 #define IDS_MOVE_TAB_LEFT               6089
 #define IDS_MOVE_TAB_RIGHT              6090
 #define IDS_EDIT_RESUME_SCROLLING       6091
+#define IDS_VIEW_ALWAYS_ON_TOP          6092
 
 #define IDS_MOUSE_COPY                  7000
 #define IDS_MOUSE_SELECT                7001
@@ -575,6 +598,8 @@
 #define ID_VIEW_SEARCH_BAR              32800
 #define ID_EDIT_RESUME_SCROLLING        32801
 #define ID_EDIT_INSERT_SNIPPET          32802
+#define ID_VIEW_ALWAYS_ON_TOP           32803
+
 
 
 // Next default values for new objects
@@ -582,8 +607,8 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        400
-#define _APS_NEXT_COMMAND_VALUE         32803
-#define _APS_NEXT_CONTROL_VALUE         1243
+#define _APS_NEXT_COMMAND_VALUE         32804
+#define _APS_NEXT_CONTROL_VALUE         1248
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

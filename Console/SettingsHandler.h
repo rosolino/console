@@ -27,9 +27,10 @@ struct SettingsBase
 
 enum BackgroundImageType
 {
-	bktypeNone		= 0,
-	bktypeImage		= 1,
-	bktypeDesktop	= 2,
+	bktypeNone    = 0,
+	bktypeImage   = 1,
+	bktypeDesktop = 2,
+	bktypeBing    = 3,
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -1082,6 +1083,7 @@ class SettingsHandler
 
 		bool LoadSettings(const wstring& strSettingsFileName);
 		bool SaveSettings();
+		bool SerializeSettings(CComPtr<IXMLDOMElement>& pSettingsRoot);
 
 		wstring	GetSettingsFileName() const { return m_strSettingsPath+m_strSettingsFileName; }
 		wstring	GetSettingsPath() const { return m_strSettingsPath; }
@@ -1098,6 +1100,7 @@ class SettingsHandler
 		MouseSettings& GetMouseSettings() { return m_mouseSettings; }
 		TabSettings& GetTabSettings() { return m_tabSettings; }
 		const SnippetSettings& GetSnippetSettings(void) const { return m_snippetSettings; }
+		const std::wstring& GetLanguage(void) const { return m_strLanguage;  }
 
 	private:
 
@@ -1110,6 +1113,8 @@ class SettingsHandler
 		wstring				m_strSettingsFileName;
 
 		SettingsDirType		m_settingsDirType;
+
+		std::wstring m_strLanguage;
 
 		ConsoleSettings		m_consoleSettings;
 		AppearanceSettings	m_appearanceSettings;

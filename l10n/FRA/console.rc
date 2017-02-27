@@ -69,10 +69,10 @@ CAPTION "À propos"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,130,130,50,14
+    PUSHBUTTON      "website",IDC_BTN_HOME_PAGE,130,110,50,14
 #ifndef _USE_AERO
-    CTEXT           "\nConsoleZ",IDC_STATIC_VERSION,25,41,78,25
+    CTEXT           "",IDC_STATIC_VERSION,15,41,100,96
     ICON            IDR_MAINFRAME,IDC_APPICON,55,26,20,20
-    CTEXT           "\nCopyright (C) 2011-2016\nChristophe Bucher\n\nversion modifiée de\nConsole 2\nécrit par\nMarko Bozikovic",IDC_APPTEXT,14,64,103,70,,WS_EX_TRANSPARENT
 #endif
     GROUPBOX        "",IDC_STATIC,7,7,115,137
 END
@@ -439,8 +439,9 @@ EXSTYLE WS_EX_TRANSPARENT
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "Couleur unie",IDC_RADIO_BK_TYPE,"Button",BS_AUTORADIOBUTTON | BS_MULTILINE | WS_GROUP,5,3,215,16
-    CONTROL         "Image",IDC_RADIO_BK_TYPE2,"Button",BS_AUTORADIOBUTTON | BS_MULTILINE,5,35,215,16
+    CONTROL         "Image",IDC_RADIO_BK_TYPE2,"Button",BS_AUTORADIOBUTTON | BS_MULTILINE,5,35,105,16
     CONTROL         "Fond d'écran",IDC_RADIO_BK_TYPE3,"Button",BS_AUTORADIOBUTTON | BS_MULTILINE,5,99,215,16
+    CONTROL         "Bing", IDC_RADIO_BK_TYPE4, "Button", BS_AUTORADIOBUTTON | BS_MULTILINE, 115, 35, 105, 16
     RTEXT           "Couleur :",IDC_STATIC_BK_COLOR,17,23,41,8
     CONTROL         "",IDC_BK_COLOR,"Static",SS_BLACKFRAME | SS_NOTIFY,60,20,16,14,WS_EX_DLGMODALFRAME
     RTEXT           "Fichier :",IDC_STATIC_BK_IMAGE,17,55,41,8,NOT WS_GROUP
@@ -450,9 +451,9 @@ BEGIN
     CONTROL         "Étendre sur les moniteurs",IDC_CHECK_BK_EXTEND,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,23,83,195,16
     RTEXT           "Position :",IDC_STATIC_BK_POS,105,70,33,8,NOT WS_GROUP
     COMBOBOX        IDC_COMBO_BK_POS,140,68,63,53,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    RTEXT           "Couleur de la teinte :",IDC_STATIC_TINT_COLOR,17,115,41,16,NOT WS_GROUP
+    RTEXT           "Couleur de la teinte :",IDC_STATIC_TINT_COLOR,17,119,41,8,NOT WS_GROUP
     CONTROL         "",IDC_TINT_COLOR,"Static",SS_BLACKFRAME | SS_NOTIFY,60,116,16,14,WS_EX_DLGMODALFRAME
-    RTEXT           "Opacité de la teinte :",IDC_STATIC_TINT_OPACITY,17,132,41,16,NOT WS_GROUP
+    RTEXT           "Opacité de la teinte :",IDC_STATIC_TINT_OPACITY,17,133,41,8,NOT WS_GROUP
     CONTROL         "",IDC_TINT_OPACITY,"msctls_trackbar32",TBS_AUTOTICKS | WS_TABSTOP,60,131,148,20
     LTEXT           "255",IDC_TINT_OPACITY_VAL,207,133,14,8,0,WS_EX_RIGHT
 
@@ -578,6 +579,18 @@ IDR_TOOLBAR_24 TOOLBAR 24, 24
 IDR_TOOLBAR_32 TOOLBAR 32, 32
 #include "res/Toolbar.rc2"
 
+IDR_TOOLBAR_40 TOOLBAR 40, 40
+#include "res/Toolbar.rc2"
+
+IDR_TOOLBAR_48 TOOLBAR 48, 48
+#include "res/Toolbar.rc2"
+
+IDR_TOOLBAR_64 TOOLBAR 64, 64
+#include "res/Toolbar.rc2"
+
+IDR_TOOLBAR_80 TOOLBAR 80, 80
+#include "res/Toolbar.rc2"
+
 IDR_SEARCH_16 TOOLBAR 16, 16
 #include "res/SearchBar.rc2"
 
@@ -588,6 +601,18 @@ IDR_SEARCH_24 TOOLBAR 24, 24
 #include "res/SearchBar.rc2"
 
 IDR_SEARCH_32 TOOLBAR 32, 32
+#include "res/SearchBar.rc2"
+
+IDR_SEARCH_40 TOOLBAR 40, 40
+#include "res/SearchBar.rc2"
+
+IDR_SEARCH_48 TOOLBAR 48, 48
+#include "res/SearchBar.rc2"
+
+IDR_SEARCH_64 TOOLBAR 64, 64
+#include "res/SearchBar.rc2"
+
+IDR_SEARCH_80 TOOLBAR 80, 80
 #include "res/SearchBar.rc2"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -615,6 +640,25 @@ IDR_FULLSCREEN1_32      BITMAP                  "res\\fullscreen1_32.bmp"
 IDR_FULLSCREEN2_32      BITMAP                  "res\\fullscreen2_32.bmp"
 IDR_SEARCH_32           BITMAP                  "res\\search_32.bmp"
 
+IDR_TOOLBAR_40          BITMAP                  "res\\toolbar_40.bmp"
+IDR_FULLSCREEN1_40      BITMAP                  "res\\fullscreen1_40.bmp"
+IDR_FULLSCREEN2_40      BITMAP                  "res\\fullscreen2_40.bmp"
+IDR_SEARCH_40           BITMAP                  "res\\search_40.bmp"
+
+IDR_TOOLBAR_48          BITMAP                  "res\\toolbar_48.bmp"
+IDR_FULLSCREEN1_48      BITMAP                  "res\\fullscreen1_48.bmp"
+IDR_FULLSCREEN2_48      BITMAP                  "res\\fullscreen2_48.bmp"
+IDR_SEARCH_48           BITMAP                  "res\\search_48.bmp"
+
+IDR_TOOLBAR_64          BITMAP                  "res\\toolbar_64.bmp"
+IDR_FULLSCREEN1_64      BITMAP                  "res\\fullscreen1_64.bmp"
+IDR_FULLSCREEN2_64      BITMAP                  "res\\fullscreen2_64.bmp"
+IDR_SEARCH_64           BITMAP                  "res\\search_64.bmp"
+
+IDR_TOOLBAR_80          BITMAP                  "res\\toolbar_80.bmp"
+IDR_FULLSCREEN1_80      BITMAP                  "res\\fullscreen1_80.bmp"
+IDR_FULLSCREEN2_80      BITMAP                  "res\\fullscreen2_80.bmp"
+IDR_SEARCH_80           BITMAP                  "res\\search_80.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -673,6 +717,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Mode Plein Écran",                ID_VIEW_FULLSCREEN
         MENUITEM "Allumer/Éteindre la Transparence",  ID_SWITCH_TRANSPARENCY
+        MENUITEM "Always On Top",               ID_VIEW_ALWAYS_ON_TOP
     END
     POPUP "Aide"
     BEGIN
@@ -842,6 +887,7 @@ BEGIN
 
     ID_CLONE_IN_NEW_TAB     "Cloner la vue courante dans un nouvel onglet\nCloner dans un nouvel onglet"
     ID_VIEW_FULLSCREEN      "Basculer en plein écran\nPlein Écran"
+    ID_VIEW_ALWAYS_ON_TOP   "Toggle window always on top\nAlways On Top"
     ID_GROUP_ALL            "Groupe tous les terminaux (toute entrée envoyée sur un terminal du groupe, sera envoyé à tous les terminaux du groupe)\nGrouper Tous les Terminaux"
     ID_UNGROUP_ALL          "Supprime le regroupement pour tous les terminaux\nGrouper Tous les Terminaux"
     ID_GROUP_TAB            "Groupe tous les terminaux de l'onglet courant (toute entrée envoyée sur un terminal du groupe, sera envoyé à tous les terminaux du groupe)\nGrouper les Terminaux de l'Onglet"
@@ -890,6 +936,7 @@ BEGIN
     IDS_ERR_TAB_CREATE_FAILED "L'ouverture de l'onglet %1% a échoué !\nLe processus %2% est peut être en cours d'exécution (utilisez le gestionnaire des tâches pour le terminer)"
     IDS_ERR_IS_NOT_A_WIN32_CONSOLE "%1% n'est pas une application console Win32 !"
     IDS_ERR_CANT_GET_USER "Unable to get current user identity (reason: %1%)!"
+    IDS_ERR_XML_PARSING "Erreur d’analyse XML (%1$#x) dans le fichier %2% à la ligne %3% colonne %4%: %5%"
 END
 
 STRINGTABLE
@@ -940,7 +987,7 @@ BEGIN
 
     MSG_TABVIEW_RUNAS       "Lancer en tant qu'un autre utilisateur"
 
-    MSG_ABOUT               "\nConsoleZ %1%.%2%.%3%.%4%\nCopyright (C) 2011-2016\nChristophe Bucher\n\nversion modifiée de\nConsole 2\nécrit par\nMarko Bozikovic"
+    MSG_ABOUT               "\nConsoleZ %1%\n\nCopyright (C) 2011-2016\nChristophe Bucher\n\nversion modifiée de\nConsole 2\nécrit par\nMarko Bozikovic"
 END
 
 STRINGTABLE
@@ -1002,6 +1049,7 @@ BEGIN
     IDS_SPLIT_SWAP           "Échange avec la vue qui avait précédemment le focus."
     IDS_CLONE_IN_NEW_TAB     "Cloner la vue dans un nouvel onglet"
     IDS_VIEW_FULLSCREEN      "Plein Écran"
+    IDS_VIEW_ALWAYS_ON_TOP   "Always on top"
     IDS_VIEW_ZOOM_100        "Zoom 100%"
     IDS_VIEW_ZOOM_INC        "Augmenter le zoom"
     IDS_VIEW_ZOOM_DEC        "Diminuer le zoom"
@@ -1104,7 +1152,7 @@ IDS_SETTINGS_TABS          "Onglets"
 IDS_SETTINGS_COMMAND       "Commande"
 IDS_SETTINGS_MOUSE_ACTION  "Action avec la souris"
 IDS_SETTINGS_TAB_NAME      "Nom de l'onglet"
-IDS_SETTINGS_MAIN          "Pricipal"
+IDS_SETTINGS_MAIN          "Principal"
 IDS_SETTINGS_BACKGROUND    "Arrière Plan"
 IDS_SETTINGS_COLORS_CURSOR "Couleurs && Curseur"
 IDS_SETTINGS_ENVIRONMENT   "Environnement"
@@ -1121,7 +1169,7 @@ IDC_COMBO_DOCKING            "Aucun;Coin haut gauche;Coin haut droit;Coin bas ga
 IDC_COMBO_ZORDER             "Normal;Toujours au dessus;Toujours en dessous;Épinglé au bureau;"
 IDC_COMBO_SMOOTHING          "Default;None;ClearType;Natural ClearType;Antialiased"
 IDC_COMBO_BUTTONS            "Aucun;Gauche;Droit;Milieu;Quatrième;Cinquième;"
-IDC_COMBO_BK_POS             "Center;Stretch;Tile;Fit;Fill;"
+IDC_COMBO_BK_POS             "Centrer;Étirer;Mosaïque;Ajuster;Remplissage;"
 IDC_COMBO_FULLSCREEN_MONITOR "Courant;"
 IDC_COMBO_BASE_PRIORITY      "Au repos;En dessous de la normale;Normale;Au dessus de la normale;Haute;Temps réel;"
 IDC_COMBO_STATE              "Fenêtre normale;Réduite;Agrandie;Plein écran;"
